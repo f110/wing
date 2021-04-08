@@ -60,3 +60,33 @@ type MinIOBucketList struct {
 
 	Items []MinIOBucket `json:"items"`
 }
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="ready",type="string",JSONPath=".status.ready",description="Ready",format="byte",priority=0
+// +kubebuilder:printcolumn:name="age",type="date",JSONPath=".metadata.creationTimestamp",description="age",format="date",priority=0
+
+type MinIOUser struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ObjectMeta `json:"metadata"`
+
+	Spec MinIOUserSpec `json:"spec"`
+}
+
+type MinIOUserSpec struct {
+	// Selector is a selector of MinioInstance
+	Selector metav1.LabelSelector `json:"selector"`
+}
+
+type MinIOUserStatus struct {
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type MinIOUserList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ObjectMeta `json:"metadata"`
+
+	Items []MinIOUser `json:"items"`
+}
